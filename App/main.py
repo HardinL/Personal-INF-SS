@@ -2,11 +2,14 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-# Akjdbhaihdwiaodaw
-tab1, tab2 = st.tabs(["Display", "Something Else"])
+def main_page():
+    st.markdown("List")
+    st.sidebar.markdown("List")
 
+# Add tabs
+# tab1, tab2 = st.tabs(["Display", "Something Else"])
 
-searched_item = None
+# searched_item = None
 
 # Read from database
 table = pd.read_csv("data.csv")
@@ -61,18 +64,18 @@ with st.sidebar:
     
 
 
-with tab1:
-    st.title("Main")
+# with tab1:
+#     st.title("Main")
 
-    # Show table
-    st.table(table)
-
-
+#     # Show table
+#     st.table(table)
 
 
-with tab2:
-    st.title("Something Else")
 
-    if searched_item is not None:
-        st.table(searched_item)
+
+# with tab2:
+#     st.title("Something Else")
+
+#     if searched_item is not None:
+#         st.table(searched_item)
 
