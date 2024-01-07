@@ -3,9 +3,16 @@ import pandas as pd
 import numpy as np
 import mysql.connector
 
+
+
+if "open_table" not in st.session_state:
+    st.session_state["open_table"] = False
+
+
+
 # connect python with mysql with your hostname,  
 # username, password and database 
-db= mysql.connector.connect(user = "root", password = "20020205", database = "list") 
+db = mysql.connector.connect(user = "root", password = "20020205", database = "list") 
   
 # get cursor object 
 cursor= db.cursor() 
@@ -28,11 +35,39 @@ st.markdown("# List")
 table = pd.DataFrame(result, columns = ['Name', 'Gender', 'Date of Birth', 'Height', 'Weight', 'Marriage Situation', 'Education', 'Salary', 'Address'])
 table.index = np.arange(1, len(table)+1)    # Set index to start from 1
 
-if st.button("Select"):
-    table.insert(0, 'Select', False)
 
-# Show table
-st.write(table)
+
+
+if st.button("SELECT"):
+    st.session_state["open_table"] = True
+
+
+
+if st.session_state["open_table"]:
+    df_with_selections = table.copy()
+    df_with_selections.insert(0, "Select", False)
+    edited_df = st.data_editor(
+        df_with_selections,
+        column_config={"Select": st.column_config.CheckboxColumn(required=True)},
+        disabled=table.columns
+    )
+else:
+    st.write(table)
+
+
+
+if st.button("CANCEL") and st.session_state["open_table"] == True:
+    st.session_state["open_table"] = False
+
+
+
+
+# if st.button("SELECT"):
+#     table.insert(0, "Select", False)
+    
+# st.write(table)
+
+
 
 with st.sidebar:
     st.markdown("# List")

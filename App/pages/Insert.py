@@ -43,19 +43,28 @@ address = st.text_input("Address", placeholder="State/City")
 
 col8, col9, col10 = st.columns([5,1,5])
 
+full = False
+press = False
+
 with col9:
     if st.button('Add'):
+        press = True
         if not all([name, gender, dob, height, weight, married, education, salary, address]):
-            # Display an error message if any field is empty
-            st.error("Please fill in all required fields.")
+            full = False
         else:
             insert_query = '''INSERT INTO `person` (`name`, `gender`, `dob`, `height`, `weight`, `married`, `education`, `salary`, `address`) 
                             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'''
             cursor.execute(insert_query, (name, gender, dob, height, weight, married, education, salary, address))
             db.commit()
+            full = True
 
-            # Display success message
-            st.success("Person is successfully added!")
+if press:
+    if not full:
+        # Display an error message if any field is empty
+        st.error("Please fill in all required fields.")
+    else:
+        # Display success message
+        st.success("Person is successfully added!")
 
 # fetch all the matching rows  
 # result = cursor.fetchall() 
